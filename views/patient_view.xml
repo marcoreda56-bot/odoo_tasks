@@ -10,8 +10,8 @@
                 <field name="last_name"/>
                 <field name="birth_date"/>
                 <field name="age"/>
-                <field name="blood_type"/>
-                <field name="pcr"/>
+                <field name="department_id"/>
+                <field name="state" widget="badge"/>
             </list>
         </field>
     </record>
@@ -21,9 +21,11 @@
         <field name="model">hms.patient</field>
         <field name="arch" type="xml">
             <form string="Patient">
+                <header>
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                </header>
                 <sheet>
-                    <field name="image" widget="image"
-                           class="oe_avatar" options="{'size': [128, 128]}"/>
+                    <field name="image" widget="image" class="oe_avatar" options="{'size': [128, 128]}"/>
 
                     <div class="oe_title">
                         <label for="first_name" string="Patient Name"/>
@@ -39,16 +41,30 @@
                             <field name="age"/>
                             <field name="address"/>
                         </group>
-                        <group string="Medical Info">
+                        <group string="Medical &amp; Hospital Info">
+                            <field name="department_id"/>
+                            <field name="department_capacity"/>
+                            <field name="doctor_ids" widget="many2many_tags" readonly="not department_id"/>
                             <field name="blood_type"/>
-                            <field name="cr_ratio"/>
                             <field name="pcr"/>
+                            <field name="cr_ratio" required="pcr"/>
                         </group>
                     </group>
 
-                    <group string="Medical History">
-                        <field name="history" nolabel="1"/>
-                    </group>
+                    <notebook>
+                        <page string="Medical History" invisible="age &lt; 50">
+                            <field name="history" nolabel="1"/>
+                        </page>
+                        <page string="Log History">
+                            <field name="log_ids" readonly="1">
+                                <list>
+                                    <field name="date"/>
+                                    <field name="created_by"/>
+                                    <field name="description"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -60,16 +76,10 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem
-        id="menu_hms_root"
-        name="HMS"
-        sequence="10"/>
-
-    <menuitem
-        id="menu_hms_patients"
-        name="Patients"
-        parent="menu_hms_root"
-        action="action_hms_patient"
-        sequence="10"/>
+    <menuitem id="menu_hms_root" name="HMS" sequence="10"/>
+    
+    <menuitem id="menu_hms_patients" name="Patients" parent="menu_hms_root" action="action_hms_patient" sequence="10"/>
+    <menuitem id="menu_hms_departments" name="Departments" parent="menu_hms_root" action="action_hms_department" sequence="20"/>
+    <menuitem id="menu_hms_doctors" name="Doctors" parent="menu_hms_root" action="action_hms_doctors" sequence="30"/>
 
 </odoo>
