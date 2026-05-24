@@ -1,1 +1,1 @@
-from . import patient,doctor,department
+from . import patient,doctor,department,customer
