@@ -45,7 +45,7 @@
                         <group string="Medical &amp; Hospital Info">
                             <field name="department_id"/>
                             <field name="department_capacity"/>
-                            <field name="doctor_ids" widget="many2many_tags" readonly="not department_id"/>
+                            <field name="doctor_ids" widget="many2many_tags" readonly="not department_id" groups="hms.group_manager_school_management"/>
                             <field name="blood_type"/>
                             <field name="pcr"/>
                             <field name="cr_ratio" required="pcr"/>
@@ -81,6 +81,6 @@
     
     <menuitem id="menu_hms_patients" name="Patients" parent="menu_hms_root" action="action_hms_patient" sequence="10"/>
     <menuitem id="menu_hms_departments" name="Departments" parent="menu_hms_root" action="action_hms_department" sequence="20"/>
-    <menuitem id="menu_hms_doctors" name="Doctors" parent="menu_hms_root" action="action_hms_doctors" sequence="30"/>
+    <menuitem id="menu_hms_doctors" name="Doctors" parent="menu_hms_root" action="action_hms_doctors" sequence="30" groups="hms.group_manager_school_management"/>
 
 </odoo>
